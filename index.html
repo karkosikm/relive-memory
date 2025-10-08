@@ -41,6 +41,22 @@
       50% { opacity: 0.4; }
       100% { transform: translateY(-120px) scale(1.06); opacity: 0.1; }
     }
+    .video-container {
+  position: relative;
+  width: 100%;
+  height: 70vh;   /* 70% of the screen height */
+  margin: 20px 0; /* small spacing above/below */
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 16px; /* keeps the nice rounded corners */
+}
 
     footer { margin-top: 26px; font-size: 0.9rem; opacity: 0.7; }
   </style>
@@ -55,13 +71,12 @@
     <h1>For Manu ❤️</h1>
     <p class="lead">Watch our photo get live ☺️❤️</p>
 
-    <div class="video">
+    <div class="video-container">
   <iframe
     src="https://player.vimeo.com/video/1125651768?autopause=0&title=0&byline=0&portrait=0"
     title="Bring our love to life ❤️"
     allow="autoplay; fullscreen; picture-in-picture"
-    allowfullscreen
-    style="position:absolute; inset:0; width:100%; height:100%; border:0;">
+    allowfullscreen>
   </iframe>
 </div>
 
