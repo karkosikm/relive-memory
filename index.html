@@ -21,7 +21,8 @@
     .wrap {
       width: 100%; max-width: 900px; background: var(--card); border-radius: 24px; padding: 32px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      text-align: center; position: relative; overflow: hidden;
+      text-align: center; position: relative;
+      overflow: hidden; /* keep hearts inside the card edges */
     }
     h1 { margin: 0 0 10px; font-size: clamp(1.8rem, 3.2vw, 2.2rem); color: var(--accent); }
     p.lead { margin: 0 0 18px; font-size: 1.1rem; opacity: 0.9; }
@@ -35,6 +36,7 @@
       border-radius: 16px;
       overflow: hidden;
       background: #000;              /* prevents white bars before load */
+      z-index: 1;                    /* below the hearts overlay */
     }
     .video-container iframe {
       position: absolute; inset: 0;
@@ -53,35 +55,40 @@
     }
 
     .note { margin-top: 18px; font-size: 0.95rem; opacity: 0.8; }
-
-    /* floating hearts (subtle) */
-    .heart { position: absolute; font-size: 22px; opacity: 0.2; animation: float 12s linear infinite; pointer-events: none; }
-    .heart:nth-child(1){ left: 8%;  top: 80%; animation-duration: 13s; }
-    .heart:nth-child(2){ left: 18%; top: 70%; animation-duration: 16s; }
-    .heart:nth-child(3){ left: 82%; top: 85%; animation-duration: 14s; }
-    .heart:nth-child(4){ left: 72%; top: 75%; animation-duration: 18s; }
-    @keyframes float {
-      0% { transform: translateY(0) scale(1); opacity: 0.25; }
-      50% { opacity: 0.4; }
-      100% { transform: translateY(-120px) scale(1.06); opacity: 0.1; }
-    }
-
     footer { margin-top: 26px; font-size: 0.9rem; opacity: 0.7; }
+
+    /* Hearts overlay so they’re always visible */
+    .hearts {
+      position: absolute; inset: 0;
+      z-index: 2;              /* above video/text */
+      pointer-events: none;    /* never block taps */
+    }
+    .heart {
+      position: absolute; font-size: 22px; opacity: 0.22;
+      animation: float 12s linear infinite;
+    }
+    .heart:nth-child(1){ left: 8%;  bottom: 6%;  animation-duration: 13s; }
+    .heart:nth-child(2){ left: 18%; bottom: 14%; animation-duration: 16s; }
+    .heart:nth-child(3){ right: 12%; bottom: 8%; animation-duration: 14s; }
+    .heart:nth-child(4){ right: 22%; bottom: 16%; animation-duration: 18s; }
+
+    @keyframes float {
+      0%   { transform: translateY(0)    scale(1);   opacity: 0.25; }
+      50%  {                              /* mid air */               opacity: 0.4;  }
+      100% { transform: translateY(-120px) scale(1.06); opacity: 0.12; }
+    }
 
     /* small screens: a touch tighter padding so the video can be bigger */
     @media (max-width: 430px){
       body { padding: 20px 14px; }
       .wrap { padding: 22px; border-radius: 20px; }
       p.lead { margin-bottom: 14px; }
+      .heart { font-size: 20px; } /* scale hearts slightly on tiny screens */
     }
   </style>
 </head>
 <body>
   <main class="wrap" role="main">
-    <div class="heart">💗</div>
-    <div class="heart">💞</div>
-    <div class="heart">💖</div>
-    <div class="heart">💓</div>
 
     <h1>For Manu ❤️</h1>
     <p class="lead">Relive the memory with me 🥰</p>
@@ -98,6 +105,14 @@
 
     <p class="note">Te amo, Marta 💕</p>
     <footer>Made with love</footer>
+
+    <!-- Hearts overlay (kept above everything) -->
+    <div class="hearts" aria-hidden="true">
+      <div class="heart">💗</div>
+      <div class="heart">💞</div>
+      <div class="heart">💖</div>
+      <div class="heart">💓</div>
+    </div>
   </main>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
