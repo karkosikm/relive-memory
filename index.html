@@ -14,50 +14,42 @@
     }
     * { box-sizing: border-box; }
     body {
-      margin: 0; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0; padding: 40px 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--ink); background: var(--bg);
-      display: flex; align-items: center; justify-content: center; min-height: 100vh;
-      overflow: hidden; /* żeby serca nie robiły scrolla */
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+      overflow: hidden; /* brak scrolla przez serca */
     }
     .wrap {
-      width: 100%; max-width: 400px; background: var(--card); border-radius: 24px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      text-align: center; position: relative; overflow: hidden;
+      width: 100%; max-width: 420px;
+      background: var(--card); border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      text-align: center; position: relative;
       z-index: 1;
     }
     h1 { margin: 0 0 10px; font-size: 2rem; color: var(--accent); }
     p.lead { margin: 0 0 20px; font-size: 1.05rem; opacity: 0.9; }
 
-    /* Phone frame */
-    .phone {
+    .video-container {
       position: relative;
       width: 100%;
-      aspect-ratio: 9/19.5;
-      background: #000;
-      border-radius: 32px;
-      padding: 10px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.2);
-      margin: 0 auto 20px;
-      z-index: 2;
+      height: 70vh;
+      margin: 20px 0;
     }
-    .phone::before {
-      content: "";
+    .video-container iframe {
       position: absolute;
-      top: 6px; left: 50%;
-      transform: translateX(-50%);
-      width: 60px; height: 6px;
-      border-radius: 3px;
-      background: #222;
-    }
-    .phone iframe {
+      top: 0; left: 0;
       width: 100%; height: 100%;
       border: 0;
-      border-radius: 20px;
+      border-radius: 16px;
     }
 
     .note { margin-top: 18px; font-size: 0.95rem; opacity: 0.8; }
     footer { margin-top: 22px; font-size: 0.9rem; opacity: 0.7; }
 
-    /* Falling hearts */
+    /* falling hearts */
     .hearts {
       position: fixed;
       inset: 0;
@@ -70,23 +62,23 @@
       top: -40px;
       font-size: 22px;
       animation: fall linear infinite;
-      opacity: 0.7;
+      opacity: 0.75;
     }
     @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
       100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <!-- Falling hearts layer -->
+  <!-- Falling hearts -->
   <div class="hearts"></div>
 
   <main class="wrap" role="main">
     <h1>For Manu ❤️</h1>
     <p class="lead">Relive the memory with me 🥰</p>
 
-    <div class="phone">
+    <div class="video-container">
       <iframe
         src="https://player.vimeo.com/video/1126342651?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;loop=1"
         title="Relive the moment ❤️"
@@ -102,16 +94,16 @@
 
   <script src="https://player.vimeo.com/api/player.js"></script>
   <script>
-    // Generate falling hearts
+    // generate falling hearts
     const container = document.querySelector('.hearts');
     const emojis = ["💗","💞","💖","💓","❤️"];
-    for (let i=0; i<25; i++){ // 25 serc naraz na ekranie
+    for (let i=0; i<25; i++){
       let heart = document.createElement("div");
       heart.className = "heart";
       heart.innerText = emojis[Math.floor(Math.random()*emojis.length)];
       heart.style.left = Math.random()*100 + "vw";
       heart.style.fontSize = (18 + Math.random()*18) + "px";
-      heart.style.animationDuration = (10 + Math.random()*10) + "s"; // 10-20s opadania
+      heart.style.animationDuration = (10 + Math.random()*12) + "s"; // wolne opadanie
       heart.style.animationDelay = (Math.random()*20) + "s";
       container.appendChild(heart);
     }
