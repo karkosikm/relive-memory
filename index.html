@@ -1,98 +1,96 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>For Manu ❤️</title>
   <meta name="description" content="Relive the memory ❤️" />
   <style>
-    :root{
+    :root {
       --bg: #fff7f9;
       --ink: #2b2b2b;
       --accent: #c2185b;
       --paper: #ffffff;
-      --video-max: 560px; /* maksymalna szerokość wideo na dużych ekranach */
     }
-    *{box-sizing:border-box; margin:0; padding:0}
-    body{
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--ink);
       background: var(--bg);
-      display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
-      min-height:100vh;
-      padding: 28px 16px 40px;
-      overflow-x:hidden;
-      position:relative;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh;
+      padding: 32px 18px;
+      overflow-x: hidden;
     }
 
-    h1{ font-size: clamp(1.6rem, 3.5vw, 2rem); color: var(--accent); margin-bottom: 10px; z-index:1; text-align:center; }
-    p.lead{ font-size: 1.1rem; opacity:.9; margin-bottom: 22px; z-index:1; text-align:center; }
+    h1 { font-size: clamp(1.6rem, 3.5vw, 2rem); color: var(--accent); margin-bottom: 10px; text-align:center; }
+    p.lead { font-size: 1.1rem; opacity: 0.9; margin-bottom: 22px; text-align:center; }
 
-    /* Cienka, równa ramka wokół wideo */
-    .polaroid{
+    /* Ramka styl "telefonu" z proporcją 9:16 */
+    .phone {
       display:inline-block;
       background: var(--paper);
-      padding: 10px;                 /* równa ramka po wszystkich krawędziach */
-      border-radius: 18px;
-      box-shadow: 0 14px 40px rgba(0,0,0,.12);
-      margin-bottom: 24px;
-      z-index:1;
-      max-width: 100%;
-    }
-
-    /* Wideo 9:16 bez czarnych pasów */
-    .video-container{
+      padding: 10px;
+      border-radius: 24px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.12);
       position: relative;
-      width: clamp(260px, 90vw, var(--video-max)); /* skaluje się na mobile i desktop */
-      aspect-ratio: 9 / 16;        /* pionowy format */
-      border-radius: 16px;         /* zaokrąglone rogi */
-      overflow: hidden;            /* klipowanie narożników */
-      background: #000;            /* bez białych błysków przed załadowaniem */
+      z-index: 1;
     }
-    .video-container iframe{
-      position: absolute; inset:0;
-      width:100%; height:100%;
-      border:0;
-      border-radius: inherit;      /* dziedziczy zaokrąglenie */
+    .screen {
+      position: relative;
+      aspect-ratio: 9 / 16;
+      width: min(100vw - 48px, 380px); /* szerokość na mobile i małych ekranach */
+      border-radius: 16px;
+      overflow: hidden;
+      background:#000;
+      z-index:1;
+    }
+    .screen iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: 0;
     }
 
-    .note{ font-size:.95rem; opacity:.85; margin-top: 8px; text-align:center; z-index:1; }
-    footer{ margin-top: 20px; font-size:.9rem; opacity:.7; text-align:center; z-index:1; }
+    /* Na desktopie – rośnie proporcjonalnie, ale max ~600px */
+    @media (min-width: 900px){
+      .screen{
+        height: 78dvh; /* rośnie dość wysoko */
+        width: calc(78dvh * 9 / 16); /* zachowaj 9:16 */
+        max-width: 600px;
+      }
+    }
 
-    /* Unoszące się serduszka */
-    .hearts{
-      position: fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+    .note { font-size: .95rem; opacity: .85; margin-top: 12px; text-align:center; }
+    footer { margin-top: 20px; font-size: .9rem; opacity: .7; text-align:center; }
+
+    /* Opadające serduszka nad wideo */
+    .hearts {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2; /* serca NAD iframe */
+      overflow: hidden;
     }
-    .heart{
-      position:absolute;
-      bottom:-40px;
-      font-size:22px;
-      opacity:.75;
-      animation: rise linear infinite;
+    .heart {
+      position: absolute;
+      top: -40px;
+      font-size: 22px;
+      animation: fall linear infinite;
+      opacity: 0.75;
     }
-    @keyframes rise{
+    @keyframes fall {
       0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
       10%  { opacity: .9; }
-      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-    }
-
-    /* Drobne dostrojenia na małych ekranach */
-    @media (max-width:430px){
-      body{ padding: 22px 12px 32px; }
-      .polaroid{ padding: 8px; border-radius: 16px; }
-      .video-container{ border-radius: 14px; }
+      100% { transform: translateY(110%) rotate(360deg); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <!-- Warstwa unoszących się serduszek -->
-  <div class="hearts"></div>
-
   <h1>For Manu ❤️</h1>
   <p class="lead">Relive the memory with me 🥰</p>
 
-  <section class="polaroid" aria-label="Video keepsake">
-    <div class="video-container">
+  <section class="phone" aria-label="Video keepsake">
+    <div class="screen">
       <iframe
         src="https://player.vimeo.com/video/1126342651?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;loop=1"
         title="Relive the moment ❤️"
@@ -100,6 +98,9 @@
         allowfullscreen
         referrerpolicy="strict-origin-when-cross-origin">
       </iframe>
+
+      <!-- Opadające serduszka -->
+      <div class="hearts" id="hearts"></div>
     </div>
   </section>
 
@@ -108,18 +109,17 @@
 
   <script src="https://player.vimeo.com/api/player.js"></script>
   <script>
-    // Generowanie unoszących się serduszek (delikatnie, różne rozmiary i prędkości)
-    const container = document.querySelector('.hearts');
+    // generowanie serduszek
+    const container = document.getElementById('hearts');
     const emojis = ["💗","💞","💖","💓","❤️"];
-    const COUNT = 25; // możesz zwiększyć do ~40, jeśli chcesz gęstszy efekt
-
-    for (let i = 0; i < COUNT; i++){
+    const COUNT = 25; // liczba serduszek
+    for (let i=0; i<COUNT; i++){
       const el = document.createElement('div');
       el.className = 'heart';
       el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-      el.style.left = (Math.random()*100) + 'vw';
+      el.style.left = (Math.random()*100) + '%';
       el.style.fontSize = (18 + Math.random()*18) + 'px';
-      el.style.animationDuration = (12 + Math.random()*16) + 's'; // 12–28s (powolne unoszenie)
+      el.style.animationDuration = (12 + Math.random()*14) + 's';
       el.style.animationDelay = (Math.random()*20) + 's';
       container.appendChild(el);
     }
