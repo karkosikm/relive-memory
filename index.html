@@ -21,39 +21,45 @@
       min-height: 100vh;
       padding: 32px 18px;
       overflow-x: hidden;
+      position: relative;
     }
 
-    h1 { font-size: 2rem; color: var(--accent); margin-bottom: 10px; }
-    p.lead { font-size: 1.1rem; opacity: 0.9; margin-bottom: 26px; }
+    h1 { font-size: 2rem; color: var(--accent); margin-bottom: 10px; z-index:1; }
+    p.lead { font-size: 1.1rem; opacity: 0.9; margin-bottom: 26px; z-index:1; }
 
+    /* Cienka, równa ramka wokół wideo (jak w bday) */
     .polaroid {
       position: relative;
       background: var(--paper);
       width: min(100%, 420px);
-      padding: 14px;
+      padding: 10px;                 /* cieńsza ramka: równo z każdej strony */
       border-radius: 18px;
       box-shadow: 0 14px 40px rgba(0,0,0,0.12);
       margin-bottom: 26px;
+      z-index:1;
     }
 
     .video-container {
       position: relative;
       width: 100%;
       height: 70vh;
-      border-radius: 12px;
-      overflow: hidden;
+      border-radius: 16px;           /* ZAOKRĄGLONE ROGI WIDEO */
+      overflow: hidden;              /* żeby iframe ładnie klipował do zaokrągleń */
+      background: #000;
     }
     .video-container iframe {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       border: 0;
+      border-radius: inherit;        /* dziedziczy zaokrąglenie kontenera */
     }
 
-    .note { font-size: 0.95rem; opacity: 0.85; margin-top: 14px; }
-    footer { margin-top: 22px; font-size: 0.9rem; opacity: 0.7; }
+    .note { font-size: 0.95rem; opacity: 0.85; margin-top: 14px; z-index:1; }
+    footer { margin-top: 22px; font-size: 0.9rem; opacity: 0.7; z-index:1; }
 
-    /* falling hearts */
+    /* unoszące się serduszka */
     .hearts {
       position: fixed;
       inset: 0;
@@ -63,19 +69,27 @@
     }
     .heart {
       position: absolute;
-      top: -40px;
+      bottom: -40px;
       font-size: 22px;
-      animation: fall linear infinite;
+      animation: rise linear infinite;
       opacity: 0.75;
     }
-    @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    @keyframes rise {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.9; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* lepsze wykorzystanie przestrzeni na desktopie */
+    @media (min-width: 900px){
+      .video-container{
+        height: 76vh;                /* trochę wyższe na dużych ekranach */
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Falling hearts -->
+  <!-- Rising hearts -->
   <div class="hearts"></div>
 
   <h1>For Manu ❤️</h1>
@@ -98,7 +112,7 @@
 
   <script src="https://player.vimeo.com/api/player.js"></script>
   <script>
-    // generate falling hearts
+    // generate rising hearts
     const container = document.querySelector('.hearts');
     const emojis = ["💗","💞","💖","💓","❤️"];
     for (let i=0; i<25; i++){
